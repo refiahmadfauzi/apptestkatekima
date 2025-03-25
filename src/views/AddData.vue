@@ -12,7 +12,13 @@
     <form @submit.prevent="addProduct">
       <div class="mb-3">
         <label class="block text-gray-700">Title:</label>
-        <input v-model="product.title" type="text" class="w-full p-2 border rounded" required />
+        <input
+          v-model="product.title"
+          type="text"
+          class="w-full p-2 border rounded"
+          required
+          :readonly="method == 'detail'"
+        />
       </div>
 
       <div class="mb-3">
@@ -23,6 +29,7 @@
           step="0.01"
           class="w-full p-2 border rounded"
           required
+          :readonly="method == 'detail'"
         />
       </div>
 
@@ -33,17 +40,30 @@
           class="w-full p-2 border rounded"
           required
           rows="5"
+          :readonly="method == 'detail'"
         ></textarea>
       </div>
 
       <div class="mb-3">
         <label class="block text-gray-700">Category:</label>
-        <input v-model="product.category" type="text" class="w-full p-2 border rounded" required />
+        <input
+          v-model="product.category"
+          type="text"
+          class="w-full p-2 border rounded"
+          required
+          :readonly="method == 'detail'"
+        />
       </div>
 
       <div class="mb-3">
         <label class="block text-gray-700">Image URL:</label>
-        <input v-model="product.image" type="url" class="w-full p-2 border rounded" required />
+        <input
+          v-model="product.image"
+          type="url"
+          class="w-full p-2 border rounded"
+          required
+          :readonly="method == 'detail'"
+        />
         <img
           v-if="product.image"
           :src="product.image"
@@ -140,7 +160,9 @@ export default {
             icon: 'success',
             confirmButtonText: 'OK',
           })
-          this.$router.push('/')
+          setTimeout(function () {
+            window.location.href = '/'
+          }, 1500)
         } catch (error) {
           console.error('Error:', error)
           Swal.fire({
@@ -161,7 +183,9 @@ export default {
             icon: 'success',
             confirmButtonText: 'OK',
           })
-          this.$router.push('/')
+          setTimeout(function () {
+            window.location.href = '/'
+          }, 1500)
         } catch (error) {
           console.error('Error:', error)
           Swal.fire({
