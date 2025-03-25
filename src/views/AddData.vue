@@ -1,7 +1,14 @@
 <template>
   <div class="max-w mx-auto p-6 bg-white rounded-lg shadow-md">
     <h1 class="text-xl font-bold mb-4">{{ title }}</h1>
-
+    <div v-if="method != 'add'" class="flex items-center mb-4">
+      <label class="mr-2">Tampilkan:</label>
+      <select v-model="selected" class="p-2 border border-gray-300 rounded-md" @change="getbyid()">
+        <option v-for="(item, index) in data" :key="item.id" :value="item.id">
+          {{ item.title }}
+        </option>
+      </select>
+    </div>
     <form @submit.prevent="addProduct">
       <div class="mb-3">
         <label class="block text-gray-700">Title:</label>
@@ -81,13 +88,26 @@ export default {
       },
       method: '',
       title: '',
+      data: [],
     }
   },
   methods: {
+    async fetchdataall() {
+      try {
+        const response = await axios.get(API_BASE_URL + '/products')
+        this.data = response.data
+        console.log(this.data)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    },
     async fetchdata() {
-      let id = sessionStorage.getItem('id_data')
+      var id = sessionStorage.getItem('id_data')
       this.method = sessionStorage.getItem('method')
       if (this.method != 'add') {
+        if (this.selected) {
+          id = this.selected
+        }
         try {
           const response = await axios.get(API_BASE_URL + '/products/' + id)
           const data = response.data
@@ -97,6 +117,7 @@ export default {
           this.product.description = data.description
           this.product.category = data.category
           this.product.image = data.image
+          this.selected = data.id
 
           this.title = this.method == 'edit' ? 'Edit Product' : 'Detail Product'
         } catch (error) {
@@ -152,9 +173,13 @@ export default {
         }
       }
     },
+    getbyid() {
+      this.fetchdata()
+    },
   },
   mounted() {
     this.fetchdata()
+    this.fetchdataall()
   },
 }
 </script>

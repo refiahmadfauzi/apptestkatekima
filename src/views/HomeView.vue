@@ -32,7 +32,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in paginatedData" :key="item.name">
+          <tr v-for="(item, index) in paginatedData" :key="item.id">
             <td class="border border-gray-300 p-2 text-center">
               {{ index + 1 + (currentPage - 1) * itemsPerPage }}
             </td>
